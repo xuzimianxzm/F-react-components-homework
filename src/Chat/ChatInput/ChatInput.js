@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ChatInput.scss';
 import { ROLE } from '../../constants';
+import answersData from '../../data/answers.json';
 
 class ChatInput extends Component {
   constructor(props) {
@@ -22,12 +23,36 @@ class ChatInput extends Component {
     if (!this.state.inputMessage) {
       return;
     }
+
+    const customerMessage = this.createMessage();
+    this.showMessage(customerMessage);
+    this.answerQuestion(customerMessage);
+    this.resetInputText();
+  };
+
+  showMessage = (customerMessage) => {
+    this.props.messages.push(customerMessage);
+    this.props.onQuestion(this.props.messages);
+  };
+
+  createMessage = () => {
     const customerMessage = {
       text: this.state.inputMessage,
       role: ROLE.CUSTOMER,
     };
-    this.props.messages.push(customerMessage);
-    this.props.onQuestion(this.props.messages);
+    return customerMessage;
+  };
+
+  answerQuestion = (currentMessage) => {
+    if (ROLE.CUSTOMER === currentMessage.role) {
+      const answerMessage = answersData.find((answer) => currentMessage.text.includes(answer.tags));
+      if (answerMessage) {
+        this.showMessage(answerMessage);
+      }
+    }
+  };
+
+  resetInputText = () => {
     this.setState({
       inputMessage: null,
     });
