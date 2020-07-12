@@ -10,7 +10,10 @@ class ChatBox extends Component {
       <section className="ChatBox">
         <ul>
           {messages.map((message, index) => (
-            <li key={index} className={message.role === ROLE.ROBOT ? 'robot' : 'customer'}>
+            <li
+              key={message.role + index}
+              className={message.role === ROLE.ROBOT ? 'robot' : 'customer'}
+            >
               <ChatMessage text={message.text} role={message.role} />
             </li>
           ))}

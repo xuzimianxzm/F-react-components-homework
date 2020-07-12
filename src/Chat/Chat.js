@@ -27,13 +27,17 @@ class Chat extends Component {
     }, 1000);
   }
 
+  setMessages = (messages) => {
+    this.setState({ messages });
+  };
+
   render() {
     const { shop, messages } = this.state;
     return (
       <main className="Chat">
         <ChatHeader shop={shop} />
         <ChatBox messages={messages} />
-        <ChatInput />
+        <ChatInput messages={messages} onQuestion={this.setMessages} />
       </main>
     );
   }
